@@ -1,0 +1,486 @@
+/* Scientific Colour Task - Full-screen passive exposure and rating */
+
+.scientific-page {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Full-screen passive colour exposure */
+.fullscreen-passive {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    z-index: 2000;
+    overflow: hidden;
+}
+
+.fullscreen-passive .phase-label,
+.fullscreen-passive .phase-timer,
+.fullscreen-passive .fixation-cross,
+.fullscreen-passive .fixation-dot {
+    display: block;
+}
+
+/* Keep phase label, timer, fixation cross/dot visible during timed exposure. */
+
+/* Rating screen - colour as background, panel for responses */
+.rating-screen {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: background-color 0.2s ease;
+}
+
+.rating-panel {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.rating-panel h3 {
+    font-size: var(--font-size-large);
+    margin-bottom: 20px;
+    margin-top: 0;
+    color: var(--color-primary);
+}
+
+.rating-group {
+    margin-bottom: 28px;
+}
+
+.rating-label {
+    display: block;
+    font-size: var(--font-size-base);
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: var(--color-primary);
+}
+
+.rating-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.rating-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.rating-option input[type="radio"],
+.rating-option input[type="checkbox"] {
+    margin-right: 12px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.rating-option label {
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    margin: 0;
+}
+
+textarea.emotion-text {
+    width: 100%;
+    padding: 12px;
+    font-size: var(--font-size-base);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    font-family: inherit;
+    min-height: 80px;
+}
+
+textarea.emotion-text:focus {
+    outline: var(--focus-outline);
+    border-color: var(--color-accent);
+}
+
+/* Scientific details (unobtrusive) */
+.stimulus-details {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background-color: rgba(240, 240, 240, 0.95);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 12px;
+    max-width: 200px;
+    color: #333;
+    border: 1px solid #ccc;
+    line-height: 1.4;
+}
+
+.stimulus-details dt {
+    font-weight: bold;
+    display: inline;
+}
+
+.stimulus-details dd {
+    display: inline;
+    margin: 0;
+}
+
+.stimulus-details dl {
+    margin: 0;
+    padding: 0;
+}
+
+.stimulus-details dd::after {
+    content: ' | ';
+    margin: 0 6px;
+}
+
+.stimulus-details dd:last-child::after {
+    content: '';
+}
+
+.provisional-notice {
+    font-size: 10px;
+    color: #666;
+    margin-top: 8px;
+    border-top: 1px solid #ccc;
+    padding-top: 8px;
+}
+
+/* Trial progress and controls */
+.trial-progress {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.progress-item {
+    text-align: center;
+    padding: 12px;
+    background-color: white;
+    border-radius: 4px;
+    border: 2px solid #ddd;
+}
+
+.progress-item-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.progress-item-value {
+    font-size: var(--font-size-large);
+    font-weight: bold;
+    color: var(--color-accent);
+    margin-top: 4px;
+}
+
+/* Mandatory break screen */
+.break-screen {
+    text-align: center;
+    padding: 32px;
+}
+
+.break-screen h2 {
+    color: var(--color-danger);
+    margin-bottom: 20px;
+}
+
+.break-screen p {
+    font-size: var(--font-size-large);
+    margin-bottom: 24px;
+}
+
+.break-timer {
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--color-accent);
+    margin: 32px 0;
+}
+
+/* Full screen toggle */
+.fullscreen-toggle {
+    margin-bottom: 20px;
+}
+
+.fullscreen-notice {
+    background-color: #e7f3ff;
+    border-left: 4px solid var(--color-accent);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* Countdown timer */
+.countdown {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-danger);
+    margin: 0 8px;
+}
+
+/* Rating response buttons */
+.rating-button-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.rating-button-group button {
+    min-height: 50px;
+    font-size: var(--font-size-base);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .rating-panel {
+        padding: 20px;
+    }
+
+    .stimulus-details {
+        position: static;
+        max-width: 100%;
+        margin-top: 20px;
+    }
+
+    .rating-options {
+        grid-template-columns: 1fr;
+    }
+
+    .rating-button-group {
+        grid-template-columns: 1fr;
+    }
+
+    .break-timer {
+        font-size: 36px;
+    }
+}
+
+/* Improved participant-ready scientific task screens */
+.phase-timer {
+    position: fixed;
+    top: 18px;
+    right: 22px;
+    min-width: 64px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.88);
+    color: #111;
+    font-weight: 800;
+    font-size: 26px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.phase-label {
+    position: fixed;
+    top: 18px;
+    left: 22px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.88);
+    color: #111;
+    font-weight: 800;
+    font-size: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.fixation-cross {
+    display: block !important;
+    font-size: 96px;
+    line-height: 1;
+    font-weight: 900;
+    color: #111;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.4);
+}
+
+.fixation-dot {
+    display: block !important;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.72);
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.22);
+}
+
+.scientific-response-page,
+.memory-task-page,
+.improved-association {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+.trial-title,
+.task-instruction,
+.colour-name-label {
+    font-size: 22px;
+    margin: 8px 0 18px;
+}
+
+.large-colour-box {
+    width: 100%;
+    max-width: 900px;
+    height: 230px;
+    margin: 16px auto 10px;
+    border: 4px solid #111;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.16);
+}
+
+.stimulus-code-line {
+    max-width: 900px;
+    margin: 8px auto 22px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #f2f2f2;
+    border: 1px solid #d2d2d2;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #222;
+}
+
+.provisional-notice-inline {
+    display: block;
+    color: #555;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.question-card {
+    background: #ffffff;
+    border: 2px solid #d7d7d7;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 18px 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.question-card h3 {
+    font-size: 22px;
+    margin: 0 0 12px;
+}
+
+.response-button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.response-button-grid.emotion-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.response-option {
+    min-height: 64px;
+    background: #f7f7f7;
+    border: 3px solid #b8b8b8;
+    color: #111;
+    border-radius: 12px;
+    font-size: 20px;
+    padding: 12px 16px;
+}
+
+.response-option:hover,
+.response-option.selected {
+    background: #fff2b8;
+    border-color: #111;
+    box-shadow: 0 0 0 4px #ffc107;
+    transform: none;
+}
+
+.other-text-wrap {
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #fff8dd;
+    border: 2px solid #ffc107;
+}
+
+.other-text-wrap input {
+    margin-top: 8px;
+    font-size: 22px;
+    min-height: 54px;
+}
+
+.task-controls-bottom {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-top: 34px;
+    padding-top: 22px;
+    border-top: 4px solid #ededed;
+}
+
+@media (max-width: 768px) {
+    .large-colour-box { height: 170px; }
+    .phase-timer { font-size: 20px; top: 10px; right: 10px; }
+    .phase-label { font-size: 16px; top: 10px; left: 10px; }
+    .fixation-cross { font-size: 72px; }
+}
+
+
+/* Old-interface preserved, but with larger experimental workspace */
+.scientific-page,
+.task-page,
+.task-placeholder,
+.summary-page,
+.setup-page,
+.consent-page,
+.aft-page,
+.scientific-response-page,
+.memory-task-page,
+.improved-association {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 28px 32px;
+}
+
+.scientific-response-page h2,
+.memory-task-page h2,
+.improved-association h2 {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.scientific-progress-track {
+    width: 100%;
+    max-width: 930px;
+    height: 10px;
+    background: #e4e4e4;
+    border-radius: 999px;
+    margin: 8px auto 18px;
+    overflow: hidden;
+}
+
+.scientific-progress-fill {
+    height: 100%;
+    background: #28a745;
+    border-radius: 999px;
+}
+
+.large-colour-box {
+    height: 260px;
+}
+
+@media (min-width: 1200px) {
+    .large-colour-box {
+        max-width: 980px;
+        height: 280px;
+    }
+}
