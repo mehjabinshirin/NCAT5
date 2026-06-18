@@ -6,6 +6,7 @@ const SCIENTIFIC_TASK = {
   ratingOnset: null,
   paused: false,
   responses: {},
+  isSubmitting: false,
 
   timings() {
     return STATE.version === 'demo' ? CONFIG.DEMO_TIMINGS : CONFIG.RESEARCH_TIMINGS;
@@ -25,13 +26,16 @@ const SCIENTIFIC_TASK = {
     this.index = 0;
     this.paused = false;
     this.responses = {};
+    this.isSubmitting = false;
     STATE.pageState.scientificBreakDone = false;
 
     STATE.logEvent(CONFIG.EVENT_TYPES.RESPONSE, {
       task_name: CONFIG.TASKS.SCIENTIFIC,
       event: 'task_initialized',
       test_version: STATE.version,
-      total_trials: this.trials.length
+      total_trials: this.trials.length,
+      valence_scale: '5-point: very unpleasant, unpleasant, unsure/neutral, pleasant, very pleasant',
+      intensity_scale: '0-4: no feeling, mild, moderate, high/strong, severe/very strong'
     });
   },
 
@@ -79,6 +83,8 @@ const SCIENTIFIC_TASK = {
         ${marker}
       </div>`;
 
+    if (typeof NAVIGATION !== 'undefined') NAVIGATION.scrollToTop();
+
     if (showTimer) {
       let remaining = seconds;
       const timer = document.getElementById('phaseTimer');
@@ -99,6 +105,7 @@ const SCIENTIFIC_TASK = {
 
     this.current = this.trials[this.index];
     this.responses = {};
+    this.isSubmitting = false;
     const t = this.timings();
 
     const baselineOn = new Date().toISOString();
@@ -131,13 +138,14 @@ const SCIENTIFIC_TASK = {
     STATE.pageState.scientificBreakDone = true;
     const t = this.timings();
     document.getElementById('mainContent').innerHTML = `
-      <section class="break-screen">
+      <section class="break-screen page-card">
         <h2>Mandatory Break</h2>
         <p>Please rest before continuing.</p>
         <div class="break-timer" id="breakTimer">${Math.ceil(t.break / 1000)}</div>
         <button class="btn-success" onclick="SCIENTIFIC_TASK.runTrial()">Continue Now</button>
         <button class="btn-danger" onclick="NAVIGATION.stopTest()">Stop Test</button>
       </section>`;
+    if (typeof NAVIGATION !== 'undefined') NAVIGATION.scrollToTop();
 
     let rem = Math.ceil(t.break / 1000);
     const int = setInterval(() => {
@@ -152,39 +160,55 @@ const SCIENTIFIC_TASK = {
   },
 
   optionButtons(group, options) {
-    return `<div class="response-button-grid ${group === 'emotion' ? 'emotion-grid' : ''}">${options.map(opt => `
-      <button type="button" class="response-option" data-group="${group}" data-value="${opt.value || opt}" onclick="SCIENTIFIC_TASK.selectOption('${group}', '${(opt.value || opt).replace(/'/g, "\\'")}', this)">${opt.label || opt}</button>
-    `).join('')}</div>`;
+    return `<div class="response-button-grid ${group === 'emotion' ? 'emotion-grid' : ''}">${options.map(opt => {
+      const value = opt.value || opt;
+      const label = opt.label || opt;
+      return `<button type="button" class="response-option" data-group="${group}" data-value="${value}" onclick="SCIENTIFIC_TASK.selectOption('${group}', '${String(value).replace(/'/g, "\\'")}', this)">${label}</button>`;
+    }).join('')}</div>`;
   },
 
   showRating() {
     this.ratingOnset = new Date().toISOString();
     const s = this.current;
+    const researcherMunsellNote = STATE.pageState.munsellReference || 'Not provided';
     document.getElementById('mainContent').innerHTML = `
-      <section class="scientific-response-page">
+      <section class="scientific-response-page page-card">
         <h2>Scientific Colour Task</h2>
         <p class="trial-title">Trial ${this.index + 1} of ${this.trials.length}</p>
         <div class="scientific-progress-track" aria-hidden="true"><div class="scientific-progress-fill" style="width:${((this.index + 1) / this.trials.length) * 100}%"></div></div>
 
         <div class="large-colour-box" style="background:${s.hex};" aria-label="Current colour stimulus"></div>
         <div class="stimulus-code-line">
-          <strong>${s.id}</strong> | ${s.name} | Target CIELCh: L*=${s.L}, C*=${s.C}, h=${s.h}° | Target CIELAB: L*=${s.cielab.L.toFixed(1)}, a*=${s.cielab.a.toFixed(1)}, b*=${s.cielab.b.toFixed(1)} | Provisional sRGB/HEX: ${s.hex}
-          <span class="provisional-notice-inline">Provisional until monitor calibration.</span>
+          <strong>${s.id}</strong> | ${s.name} | Target CIELCh: L*=${s.L}, C*=${s.C}, h=${s.h}° | Target CIELAB: L*=${s.cielab.L.toFixed(1)}, a*=${s.cielab.a.toFixed(1)}, b*=${s.cielab.b.toFixed(1)} | Provisional sRGB/HEX: ${s.hex}<br>
+          <strong>Munsell:</strong> ${s.munsell || 'Pending calibrated Munsell measurement'} | <strong>Session Munsell/Calibration Note:</strong> ${researcherMunsellNote}
+          <span class="provisional-notice-inline">Display values are provisional until monitor calibration and physical measurement.</span>
         </div>
 
         <div class="question-card">
-          <h3>1. How does this colour feel?</h3>
-          ${this.optionButtons('valence', ['Unpleasant', 'Neutral', 'Pleasant'])}
+          <h3>1. How pleasant or unpleasant is this colour?</h3>
+          ${this.optionButtons('valence', [
+            { value: 'very_unpleasant', label: 'Very unpleasant' },
+            { value: 'unpleasant', label: 'Unpleasant' },
+            { value: 'unsure_neutral', label: 'Unsure / Neutral' },
+            { value: 'pleasant', label: 'Pleasant' },
+            { value: 'very_pleasant', label: 'Very pleasant' }
+          ])}
         </div>
 
         <div class="question-card">
-          <h3>2. Calm or active?</h3>
-          ${this.optionButtons('arousal', ['Calm', 'Neutral', 'Active'])}
+          <h3>2. How calming or activating is this colour?</h3>
+          ${this.optionButtons('arousal', [
+            { value: 'very_calm', label: 'Very calm' },
+            { value: 'calm', label: 'Calm' },
+            { value: 'unsure_neutral', label: 'Unsure / Neutral' },
+            { value: 'active', label: 'Active' },
+            { value: 'very_active', label: 'Very active' }
+          ])}
         </div>
 
         <div class="question-card">
-          <h3>3. Closest emotional family</h3>
-          ${this.optionButtons('emotion', ['Joy / Happy', 'Calm / Content', 'Excited / Interested', 'Love / Warmth', 'Sad', 'Angry', 'Fearful / Anxious', 'Disgusted', 'Surprised', 'Bored / Tired', 'No emotion', 'Other'])}
+          <h3>3. Closest emotional response</h3>
+          ${this.optionButtons('emotion', ['Joy / Happy', 'Calm / Content', 'Excited / Interested', 'Love / Warmth', 'Sad', 'Angry', 'Fearful / Anxious', 'Disgusted', 'Surprised', 'Bored / Tired', 'No emotion', 'Unsure', 'Other'])}
           <div id="emotionOtherWrap" class="other-text-wrap" style="display:none;">
             <label for="emotionOther">Please type the other feeling:</label>
             <input id="emotionOther" type="text" placeholder="Type here">
@@ -192,22 +216,24 @@ const SCIENTIFIC_TASK = {
         </div>
 
         <div class="question-card">
-          <h3>4. Intensity</h3>
+          <h3>4. Intensity of the response</h3>
           ${this.optionButtons('intensity', [
             { value: '0', label: '0 No feeling' },
             { value: '1', label: '1 Mild' },
             { value: '2', label: '2 Moderate' },
-            { value: '3', label: '3 Strong' }
+            { value: '3', label: '3 High / Strong' },
+            { value: '4', label: '4 Severe / Very strong' }
           ])}
         </div>
 
         <div class="task-controls-bottom">
-          <button class="btn-success" onclick="SCIENTIFIC_TASK.submitRating()">Submit Response</button>
+          <button class="btn-success" id="scientificSubmitBtn" onclick="SCIENTIFIC_TASK.submitRating()">Submit Response</button>
           <button class="btn-warning" onclick="SCIENTIFIC_TASK.skipTrial()">Skip Trial</button>
           <button class="btn-secondary" onclick="SCIENTIFIC_TASK.pause()">Pause</button>
           <button class="btn-danger" onclick="NAVIGATION.stopTest()">Stop Test</button>
         </div>
       </section>`;
+    if (typeof NAVIGATION !== 'undefined') NAVIGATION.scrollToTop();
   },
 
   selectOption(group, value, button) {
@@ -221,19 +247,27 @@ const SCIENTIFIC_TASK = {
   },
 
   submitRating() {
+    if (this.isSubmitting) return;
     const required = ['valence', 'arousal', 'emotion', 'intensity'];
     const missing = required.filter(key => !this.responses[key]);
     if (missing.length) {
       alert('Please answer all questions, or use Skip Trial.');
       return;
     }
+    this.isSubmitting = true;
+    const btn = document.getElementById('scientificSubmitBtn');
+    if (btn) btn.disabled = true;
 
     this.logTrial('completed', {
       valence_response: this.responses.valence,
+      valence_scale_type: '5_point_with_unsure_neutral',
       arousal_response: this.responses.arousal,
+      arousal_scale_type: '5_point_with_unsure_neutral',
       emotion_response: this.responses.emotion,
+      emotion_question_label: 'Closest emotional response',
       emotion_other_text: document.getElementById('emotionOther') ? document.getElementById('emotionOther').value : '',
-      intensity_score: this.responses.intensity
+      intensity_score: this.responses.intensity,
+      intensity_scale_type: '0_no_feeling_1_mild_2_moderate_3_high_strong_4_severe_very_strong'
     });
     this.nextAfterWashout();
   },
@@ -265,6 +299,9 @@ const SCIENTIFIC_TASK = {
       rgb_b: s.rgb.b,
       hex_value: s.hex,
       gamut_status: s.gamutStatus,
+      munsell_reference: s.munsell || 'Pending calibrated Munsell measurement',
+      session_munsell_reference_note: STATE.pageState.munsellReference || '',
+      monitor_id: STATE.pageState.monitorId || '',
       ...this.currentTimes,
       rating_onset_time: this.ratingOnset,
       response_time_ms: new Date(now) - new Date(this.ratingOnset),

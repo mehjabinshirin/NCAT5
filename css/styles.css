@@ -334,3 +334,105 @@ p {
         font-size: 18px;
     }
 }
+
+/* NCAT UX refinement layer */
+:root {
+    --surface-bg: #f6f8fb;
+    --card-bg: #ffffff;
+    --text-muted: #4f5b66;
+}
+
+body {
+    background: linear-gradient(180deg, #f8fbff 0%, #eef3f8 100%);
+}
+
+.app-header {
+    padding: 18px 24px;
+    border-bottom: 4px solid #2e7dd1;
+}
+
+.app-header h1 {
+    font-size: clamp(24px, 3vw, 34px);
+}
+
+.main-content {
+    padding-top: 28px;
+    padding-bottom: 36px;
+}
+
+.page-card,
+.task-page,
+.scientific-page,
+.summary-page,
+.setup-page,
+.consent-page,
+.aft-page,
+.scientific-response-page,
+.memory-task-page,
+.improved-association {
+    background: var(--card-bg);
+    border: 1px solid #d7e0ea;
+    border-radius: 18px;
+    box-shadow: 0 10px 26px rgba(31, 45, 61, 0.09);
+}
+
+.helper-text,
+.field-note {
+    color: var(--text-muted);
+    font-size: 16px;
+    line-height: 1.55;
+    margin-top: 4px;
+}
+
+.field-note {
+    margin-bottom: 0;
+}
+
+.required-star {
+    color: #c82333;
+}
+
+.setup-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+    border-radius: 10px;
+    border: 2px solid #b8c4d0;
+    min-height: 54px;
+}
+
+button {
+    border-radius: 12px;
+}
+
+button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.summary-info {
+    background: #f7fafc;
+    border: 1px solid #d9e2ec;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
+}
+
+.auto-download-status {
+    font-weight: 800;
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .setup-grid {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+}

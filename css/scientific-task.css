@@ -484,3 +484,51 @@ textarea.emotion-text:focus {
         height: 280px;
     }
 }
+
+/* NCAT scientific task refinements */
+.scientific-response-page,
+.memory-task-page,
+.improved-association {
+    scroll-margin-top: 0;
+}
+
+.large-colour-box {
+    border-radius: 18px;
+    border: 5px solid #111;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+}
+
+.question-card {
+    border-color: #ccd6e0;
+    box-shadow: 0 4px 14px rgba(31, 45, 61, 0.06);
+}
+
+.question-card h3 {
+    letter-spacing: -0.01em;
+}
+
+.response-option {
+    background: #f9fbfd;
+    border-color: #aebdcc;
+}
+
+.response-option:hover,
+.response-option.selected {
+    background: #fff4bd;
+    border-color: #111;
+    box-shadow: 0 0 0 5px #ffc107;
+}
+
+.task-controls-bottom {
+    background: #ffffff;
+    position: relative;
+    z-index: 5;
+}
+
+.scientific-progress-track {
+    background: #dfe7ef;
+}
+
+.scientific-progress-fill {
+    background: linear-gradient(90deg, #1677c7, #28a745);
+}

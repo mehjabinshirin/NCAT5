@@ -7,19 +7,19 @@ const SCIENTIFIC_STIMULI = {
     HUE_ANGLES: [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330],
 
     conditions: [
-        { id: 'SC01', name: 'Controlled Red', L: 70, C: 38, h: 0, category: 'controlled-hue' },
-        { id: 'SC02', name: 'Controlled Red-Orange', L: 70, C: 38, h: 30, category: 'controlled-hue' },
-        { id: 'SC03', name: 'Controlled Orange-Yellow', L: 70, C: 38, h: 60, category: 'controlled-hue' },
-        { id: 'SC04', name: 'Controlled Yellow-Ochre', L: 70, C: 38, h: 90, category: 'controlled-hue' },
-        { id: 'SC05', name: 'Controlled Yellow-Green', L: 70, C: 38, h: 120, category: 'controlled-hue' },
-        { id: 'SC06', name: 'Controlled Green', L: 70, C: 38, h: 150, category: 'controlled-hue' },
-        { id: 'SC07', name: 'Controlled Green-Cyan', L: 70, C: 38, h: 180, category: 'controlled-hue' },
-        { id: 'SC08', name: 'Controlled Cyan', L: 70, C: 38, h: 210, category: 'controlled-hue' },
-        { id: 'SC09', name: 'Controlled Cyan-Blue', L: 70, C: 38, h: 240, category: 'controlled-hue' },
-        { id: 'SC10', name: 'Controlled Blue', L: 70, C: 38, h: 270, category: 'controlled-hue' },
-        { id: 'SC11', name: 'Controlled Violet-Purple', L: 70, C: 38, h: 300, category: 'controlled-hue' },
-        { id: 'SC12', name: 'Controlled Magenta', L: 70, C: 38, h: 330, category: 'controlled-hue' },
-        { id: 'SC13', name: 'Neutral Grey', L: 70, C: 0, h: 0, category: 'neutral' }
+        { id: 'SC01', name: 'Controlled Red', L: 70, C: 38, h: 0, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC02', name: 'Controlled Red-Orange', L: 70, C: 38, h: 30, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC03', name: 'Controlled Orange-Yellow', L: 70, C: 38, h: 60, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC04', name: 'Controlled Yellow-Ochre', L: 70, C: 38, h: 90, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC05', name: 'Controlled Yellow-Green', L: 70, C: 38, h: 120, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC06', name: 'Controlled Green', L: 70, C: 38, h: 150, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC07', name: 'Controlled Green-Cyan', L: 70, C: 38, h: 180, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC08', name: 'Controlled Cyan', L: 70, C: 38, h: 210, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC09', name: 'Controlled Cyan-Blue', L: 70, C: 38, h: 240, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC10', name: 'Controlled Blue', L: 70, C: 38, h: 270, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC11', name: 'Controlled Violet-Purple', L: 70, C: 38, h: 300, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC12', name: 'Controlled Magenta', L: 70, C: 38, h: 330, category: 'controlled-hue', munsell: 'Pending calibrated Munsell measurement' },
+        { id: 'SC13', name: 'Neutral Grey', L: 70, C: 0, h: 0, category: 'neutral', munsell: 'Pending calibrated Munsell measurement' }
     ],
 
     getStimulusById(id) {

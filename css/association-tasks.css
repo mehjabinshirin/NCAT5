@@ -267,3 +267,64 @@
     .face-grid-large { grid-template-columns: repeat(2, 1fr); }
     .face-option-large { min-height: 145px; }
 }
+
+/* NCAT association task refinements */
+.colour-grid-note {
+    text-align: center;
+    margin-top: -4px;
+    margin-bottom: 14px;
+}
+
+.color-button {
+    position: relative;
+    border: 4px solid #1d1d1d;
+    overflow: hidden;
+}
+
+.color-button.selected {
+    outline: 6px solid #ffc107;
+    border-color: #000;
+    box-shadow: 0 0 0 5px #ffffff inset, 0 8px 20px rgba(0,0,0,0.24);
+    transform: none;
+}
+
+.color-button.selected::after {
+    content: '✓ selected';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    padding: 3px 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #111;
+    font-size: 13px;
+    font-weight: 900;
+    text-shadow: none;
+}
+
+.selected-colour-applied {
+    box-shadow: 0 0 0 9px #ffc107, 0 14px 30px rgba(0,0,0,0.18);
+}
+
+.selected-swatch {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    border: 2px solid #111;
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.face-display-large {
+    background: #fbfcfe;
+    border-color: #d7e0ea;
+    box-shadow: 0 8px 22px rgba(31,45,61,0.08);
+}
+
+.face-option-large.selected {
+    border-color: #111;
+    outline: 6px solid #ffc107;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+}

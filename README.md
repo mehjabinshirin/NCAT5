@@ -324,3 +324,21 @@ Before using this application for participant testing, ensure:
 **Last Updated:** 2026-06-05
 **Platform:** Static HTML/CSS/JavaScript (no server required)
 **Browser:** Chrome/Chromium recommended
+
+## Update: UI/UX and Data Safety Refinement
+
+This version includes the following experiment-focused improvements:
+
+- Automatic CSV download when the Summary page is reached, with manual download still available as a backup.
+- Page scroll reset after every Submit/Continue/Skip navigation so the next stimulus or instruction starts at the top.
+- Required Researcher Initials field; initials are written into every event row in the CSV.
+- Optional Monitor / Device ID and Munsell / Calibration Reference fields for colour-calibration documentation.
+- Scientific Colour Task question updates:
+  - valence changed to a 5-point scale with Unsure / Neutral,
+  - arousal changed to a 5-point scale with Unsure / Neutral,
+  - “Closest emotional family” changed to “Closest emotional response,”
+  - intensity changed to a 0–4 scale: No feeling, Mild, Moderate, High / Strong, Severe / Very strong.
+- Munsell fields are recorded as pending calibrated measurement unless the researcher enters a calibration note.
+- Face-to-Colour colour positions are randomized on every item to support attention and reduce location-memory responses.
+- The selected colour is visibly applied to the face preview and the selected colour button is clearly highlighted.
+- Colour-to-Face face options are randomized on every item and logged.

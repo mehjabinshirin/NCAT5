@@ -2,6 +2,8 @@
 const STATE = {
   sessionId: '',
   participantId: '',
+  researcherInitials: '',
+  researcherName: '',
   version: 'demo',
   currentPageIndex: 0,
   dataLog: [],
@@ -12,17 +14,24 @@ const STATE = {
   resetSession() {
     this.sessionId = 'NCAT-' + Date.now();
     this.participantId = '';
+    this.researcherInitials = '';
+    this.researcherName = '';
     this.version = 'demo';
     this.currentPageIndex = 0;
     this.dataLog = [];
     this.pageState = {
       setupComplete: false,
       consentGiven: false,
+      researcherInitials: '',
+      researcherName: '',
+      monitorId: '',
+      munsellReference: '',
       aftDetails: null,
       scientificResponses: [],
       faceToColourResponses: [],
       colourToFaceResponses: [],
-      indianMemoryResponses: []
+      indianMemoryResponses: [],
+      csvAutoDownloaded: false
     };
     this.isPaused = false;
     this.pausedAt = null;
@@ -62,6 +71,9 @@ const STATE = {
     const event = {
       session_id: this.sessionId,
       participant_id: this.participantId,
+      researcher_initials: this.researcherInitials || this.pageState.researcherInitials || '',
+      researcher_name: this.researcherName || this.pageState.researcherName || '',
+      test_version: this.version,
       event_type: eventType,
       page: this.getCurrentPageName(),
       timestamp: new Date().toISOString(),

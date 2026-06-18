@@ -74,7 +74,7 @@ const INDIAN_MEMORY_TASK = {
 
         <div class="question-card">
           <h3>4. How does this colour feel?</h3>
-          ${this.optionButtons('valence', ['Pleasant', 'Neutral', 'Unpleasant'])}
+          ${this.optionButtons('valence', ['Very unpleasant', 'Unpleasant', 'Unsure / Neutral', 'Pleasant', 'Very pleasant'])}
         </div>
 
         <div class="task-controls-bottom">
@@ -84,6 +84,7 @@ const INDIAN_MEMORY_TASK = {
           <button class="btn-danger" onclick="NAVIGATION.stopTest()">Stop Test</button>
         </div>
       </section>`;
+    if (typeof NAVIGATION !== 'undefined') NAVIGATION.scrollToTop();
   },
 
   selectOption(group, value, button) {
@@ -120,6 +121,7 @@ const INDIAN_MEMORY_TASK = {
       memory_category: this.responses.memoryCategory,
       memory_other_text: document.getElementById('otherMemory') ? document.getElementById('otherMemory').value : '',
       valence_response: this.responses.valence,
+      valence_scale_type: '5_point_with_unsure_neutral',
       response_time_ms: new Date(now) - new Date(this.start),
       trial_status: 'completed'
     });
